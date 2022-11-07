@@ -1,0 +1,33 @@
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  justify-content: space-around;
+  background-color: lightgrey;
+}
+
+
+.App-header {
+  width: 700px;
+  font-size: 15px;
+  color: black;
+}
+
+.current {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.columns {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.box {
+  height: 400px;
+  width: 400px;
+  background-color: beige;
+}
