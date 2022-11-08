@@ -31,7 +31,7 @@ function useFactList(catFact, index) {
 function catFactsDisplay(factList) {
   return factList.map(
     (catfact1) =>
-      catfact1.key > ((factList.length < 10) ? 1 : (factList.length - 10)) &&
+      catfact1.key > ((factList.length < 13) ? 1 : (factList.length - 12)) &&
       catfact1.key < factList.length - 1 &&
       catfact1.key < factList.length - 1 && <p> {catfact1.string}</p>
   );
@@ -40,13 +40,18 @@ function catFactsDisplay(factList) {
 function catFactsAll(factList) {
   return factList.map(
     (catfact1) =>
-      <p> {catfact1.string}</p>
+      catfact1.key > 0 && <p> {catfact1.string}</p>
   );
 }
 
 function App() {
   const [index, setIndex] = useState(1);
   const [boxIndex, setBoxIndex] = useState(2);
+
+  const favsList = [];
+  const [favs, setFavs] = useState([]);
+  console.log("favs: " + favs.length);
+  console.log(favs);
 
   const catFact = useCatFact(index);
 
@@ -71,18 +76,34 @@ function App() {
         </header>
       </div>
       <div className="columns">
-        <p className = "box"> {catfsAll[boxIndex]} </p>
+        <p className = "box"
+        style={{
+          backgroundColor: (favs.map(e => e.boxIndexCurrent)
+          .includes(boxIndex - 1)) ? "lightyellow" : "lightblue"
+        }}
+        > {catfsAll[boxIndex]} </p>
         <p> {boxIndex - 1} out of { index} </p>
         <button
             onClick={() => {
-              setBoxIndex(boxIndex - 1);
+              const boxIndexCurrent = boxIndex - 1
+              setFavs((!(favs.map(e => e.boxIndexCurrent)
+              .includes(boxIndex - 1))) ? (favs.length === 0 ? [{boxIndexCurrent}] : [...favs, { boxIndexCurrent }]) : favs.filter(e => e.boxIndexCurrent !== boxIndex - 1))
+              console.log("favs: " + favs.length);
+              console.log(favs);
+            }}
+          >
+            {"fav?"}
+          </button>
+        <button
+            onClick={() => {
+              setBoxIndex((boxIndex < 3) ? (boxIndex) : (boxIndex - 1));
             }}
           >
             {"<"}
           </button>
           <button
             onClick={() => {
-              setBoxIndex(boxIndex + 1);
+              setBoxIndex((boxIndex > index) ? (boxIndex) : (boxIndex + 1));
             }}
           >
             {">"}
