@@ -109,7 +109,7 @@ function App() {
             console.log(favs);
           }}
         >
-          {"Favorite"}
+          { (favs.map((e) => e.boxIndexCurrent).includes(boxIndex - 1)) ? "Unfavorite" : "Favorite" }
         </button>
         <div className="leftright">
           <button
