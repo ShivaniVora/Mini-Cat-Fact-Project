@@ -2,13 +2,11 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 function useCatFact(index) {
-  // console.log(index);
   const [catFact, setCatFact] = useState("");
   useEffect(() => {
     fetch(`https://catfact.ninja/fact`)
       .then((res) => res.json())
       .then((data) => setCatFact(data.fact));
-    // console.log(catFact)
   }, [index]);
   return catFact;
 }
@@ -37,27 +35,23 @@ function catFactsDisplay(factList) {
   );
 }
 
-function catFactsAll(factList) {
-  return factList.map(
-    (catfact1) => catfact1.key > 0 && <p> {catfact1.string}</p>
+function paginationDisplay(catFactsAll, boxIndex) {
+  return catFactsAll.map(
+    (catft) =>
+    catft.key > ((boxIndex - 1) * 10) - 9 &&
+    catft.key <= ((boxIndex - 1) * 10) + 1 && <p className="hist"> {catft.string}</p>
   );
 }
 
 function App() {
   const [index, setIndex] = useState(1);
   const [boxIndex, setBoxIndex] = useState(2);
-
   const [favs, setFavs] = useState([]);
-  console.log("favs: " + favs.length);
-  console.log(favs);
-
   const catFact = useCatFact(index);
-
-  console.log(index + "HELLO");
   const factList = useFactList(catFact, index);
   const catfs = catFactsDisplay(factList);
-  const catfsAll = catFactsAll(factList);
-  console.log(factList);
+  const catfsPgDisplay = paginationDisplay(factList, boxIndex);
+
   return (
     <div className="App">
       <div className="columns">
@@ -78,6 +72,7 @@ function App() {
       </div>
       <div className="columns">
         <p className="history">Fact History</p>
+        <p className="histHeader">Up to 10 facts displayed at one time.</p>
         <p
           className="box"
           style={{
@@ -88,11 +83,12 @@ function App() {
               : "lightgrey",
           }}
         >
-          {" "}
-          {catfsAll[boxIndex]}{" "}
+          <div className = "page">
+          { catfsPgDisplay }
+          </div>
         </p>
         <p>
-          {boxIndex - 1} out of {index}{" "}
+          {boxIndex - 1} out of { Math.trunc((index+9) / 10) }{" "}
         </p>
         <button
           className="fav"
@@ -105,8 +101,6 @@ function App() {
                   : [...favs, { boxIndexCurrent }]
                 : favs.filter((e) => e.boxIndexCurrent !== boxIndex - 1)
             );
-            console.log("favs: " + favs.length);
-            console.log(favs);
           }}
         >
           { (favs.map((e) => e.boxIndexCurrent).includes(boxIndex - 1)) ? "Unfavorite" : "Favorite" }
@@ -123,7 +117,7 @@ function App() {
           <button
             className="lrbutton"
             onClick={() => {
-              setBoxIndex(boxIndex > index ? boxIndex : boxIndex + 1);
+              setBoxIndex(boxIndex >  Math.trunc((index+9) / 10) ? boxIndex : boxIndex + 1);
             }}
           >
             {">"}
