@@ -54,8 +54,11 @@ function App() {
 
   return (
     <div className="App">
-      <div className="columns">
-        
+      <div className="title">
+        <p className="title-text">Cat Fact Generator</p>
+      </div>
+      <div class="columns">
+        <div className="column">
           <header className="App-header">
           <div className="top">
             <p className="current"> {catFact}</p>
@@ -70,7 +73,7 @@ function App() {
             {catfs}
           </header>
       </div>
-      <div className="columns">
+      <div className="column">
         <p className="history">Fact History</p>
         <p className="histHeader">Up to 10 facts displayed at one time.</p>
         <p
@@ -123,6 +126,7 @@ function App() {
             {">"}
           </button>
         </div>
+      </div>
       </div>
     </div>
   );
